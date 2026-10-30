@@ -1,0 +1,28 @@
+# Configuration chứa thông tin kết nối
+config.php
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Cache và file tạm
+cache/
+tmp/
+temp/
+
+# Backup database
+*.sql
+*.sql.gz
+*.zip
+*.bak
+
+# Git
+.git/
+
+# IDE
+.vscode/
+.idea/
