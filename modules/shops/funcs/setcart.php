@@ -25,7 +25,23 @@ $num = $nv_Request->get_int('num', 'post,get', 1);
 $ac = $nv_Request->get_string('ac', 'post,get', 0);
 $contents_msg = "";
 
-if (!is_numeric($num) or $num < 0) {
+// [CUSTOM DAY 6] Ràng buộc Backend PHP: Kiểm tra bắt buộc phải chọn Size giày nếu sản phẩm có phân loại Size
+$has_missing_size = false;
+if ($ac == 0 && $id > 0 && empty(trim((string)$group, ','))) {
+    try {
+        $check_has_size = $db->query("SELECT COUNT(*) FROM " . $db_config['prefix'] . "_" . $module_data . "_group_items WHERE pro_id = " . (int)$id)->fetchColumn();
+        if ((int)$check_has_size > 0) {
+            $has_missing_size = true;
+        }
+    } catch (Exception $e) {
+        // Fallback an toàn trên PHP 8.2 nếu tên bảng phụ khác nhau giữa các bản build
+        $has_missing_size = false;
+    }
+}
+
+if ($has_missing_size) {
+    $contents_msg = 'ERR_Vui lòng chọn kích cỡ giày (Size) trước khi thêm vào giỏ hàng!';
+} elseif (!is_numeric($num) or $num < 0) {
     $contents_msg = 'ERR_' . $lang_module['cart_set_err'];
 } else {
     if ($ac == 0) {

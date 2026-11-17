@@ -192,7 +192,7 @@ function nv_template_view_blockcat($array_data, $data_content, $html_pages = '',
  */
 function nv_template_detail($data_content, $data_unit, $data_others, $array_other_view, $content_comment, $compare_id, $popup, $idtemplates, $array_keyword)
 {
-    global $module_info, $lang_module, $module_file, $module_name, $module_upload, $pro_config, $global_config, $global_array_group, $array_wishlist_id, $client_info, $global_array_shops_cat, $meta_property, $user_info, $discounts_config, $my_head, $my_footer;
+    global $module_info, $lang_module, $module_file, $module_name, $module_upload, $pro_config, $global_config, $global_array_group, $array_wishlist_id, $client_info, $global_array_shops_cat, $meta_property, $user_info, $discounts_config, $my_head, $my_footer, $db, $db_config, $module_data;
 
     $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
     $link2 = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
@@ -417,10 +417,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
                         $sub_info = $global_array_group[$sub_gr_id];
                         if ($sub_info['in_order']) {
                             $xtpl->assign('GROUP', $sub_info);
-                            if (sizeof($subid) == 1) {
-                                $xtpl->parse('main.group.items.loop.active');
-                                $xtpl->parse('main.group.items.loop.checked');
-                            }
+                            // [CUSTOM DAY 6] Khong tu dong check san Size de bat buoc khach hang phai chon Size
                             $xtpl->parse('main.group.items.loop');
                         }
                     }
@@ -445,7 +442,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
                 foreach ($subid as $sub_gr_id) {
                     $sub_info = $global_array_group[$sub_gr_id];
                     if ($sub_info['indetail']) {
-                        $xtpl->assign('SUBTITLE', $sub_info['title']);
+                        $xtpl->assign('SUBTITLE', $sub_info);
                         $xtpl->parse('main.group_detail.loop.subtitle.loop');
                     }
                 }
@@ -536,6 +533,50 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
         define('FACEBOOK_JSSDK', true);
     }
 
+    // [CUSTOM DAY 6] Truy van danh sach ma Coupon con han hien thi tai trang Chi tiet san pham
+    try {
+        $sql_cp_detail = 'SELECT title, code, type, discount, total_amount, uses_per_coupon, uses_per_coupon_count 
+                          FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons 
+                          WHERE status = 1 
+                          AND (date_start = 0 OR date_start <= ' . NV_CURRENTTIME . ') 
+                          AND (date_end = 0 OR date_end >= ' . NV_CURRENTTIME . ')
+                          ORDER BY id DESC';
+        $res_cp_detail = $db->query($sql_cp_detail);
+        $has_cp_detail = false;
+
+        while ($cp = $res_cp_detail->fetch()) {
+            $max_uses = (int)($cp['uses_per_coupon'] ?? 0);
+            $used_count = (int)($cp['uses_per_coupon_count'] ?? 0);
+            if ($max_uses > 0 && $used_count >= $max_uses) {
+                continue;
+            }
+
+            $discount_val = (float)($cp['discount'] ?? 0);
+            $discount_text = (($cp['type'] ?? 'f') === 'p')
+                ? 'Giảm ' . rtrim(rtrim(number_format($discount_val, 2), '0'), '.') . '%'
+                : 'Giảm ' . number_format($discount_val, 0, ',', '.') . 'đ';
+
+            $min_order = (float)($cp['total_amount'] ?? 0);
+            $min_order_text = $min_order > 0
+                ? ' (Đơn từ ' . number_format($min_order, 0, ',', '.') . 'đ)'
+                : ' (Mọi đơn hàng)';
+
+            $xtpl->assign('COUPON_DETAIL', array(
+                'code' => htmlspecialchars((string)($cp['code'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'title' => htmlspecialchars((string)($cp['title'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'desc' => $discount_text . $min_order_text
+            ));
+            $xtpl->parse('main.coupon_tray_detail.loop');
+            $has_cp_detail = true;
+        }
+
+        if ($has_cp_detail) {
+            $xtpl->parse('main.coupon_tray_detail');
+        }
+    } catch (Exception $e) {
+        // Dam bao an toan tren PHP 8.2
+    }
+
     $xtpl->parse('main');
     return $xtpl->text('main');
 }
@@ -599,7 +640,7 @@ function print_product($data_content, $data_unit, $page_title)
  */
 function cart_product($data_content, $coupons_code, $order_info, $array_error_number)
 {
-    global $module_info, $lang_module, $module_config, $module_file, $module_name, $pro_config, $money_config, $global_array_group, $global_array_shops_cat;
+    global $module_info, $lang_module, $module_config, $module_file, $module_name, $pro_config, $money_config, $global_array_group, $global_array_shops_cat, $db, $db_config, $module_data;
 
     $xtpl = new XTemplate('cart.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
@@ -727,6 +768,51 @@ function cart_product($data_content, $coupons_code, $order_info, $array_error_nu
         $xtpl->parse('main.edit_order');
     } else {
         if ($module_config[$module_name]['use_coupons']) {
+            // [CUSTOM DAY 6] Truy van danh sach Coupon con han hien thi tai trang Gio hang
+            try {
+                $sql_coupons = 'SELECT id, title, code, type, discount, total_amount, date_end, uses_per_coupon, uses_per_coupon_count 
+                                FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons 
+                                WHERE status = 1 
+                                AND (date_start = 0 OR date_start <= ' . NV_CURRENTTIME . ') 
+                                AND (date_end = 0 OR date_end >= ' . NV_CURRENTTIME . ')
+                                ORDER BY id DESC';
+                $result_coupons = $db->query($sql_coupons);
+                $has_available_coupons = false;
+
+                while ($cp = $result_coupons->fetch()) {
+                    $max_uses = (int)($cp['uses_per_coupon'] ?? 0);
+                    $used_count = (int)($cp['uses_per_coupon_count'] ?? 0);
+
+                    if ($max_uses > 0 && $used_count >= $max_uses) {
+                        continue;
+                    }
+
+                    $discount_val = (float)($cp['discount'] ?? 0);
+                    $discount_text = (($cp['type'] ?? 'f') === 'p')
+                        ? 'Giảm ' . rtrim(rtrim(number_format($discount_val, 2), '0'), '.') . '%'
+                        : 'Giảm ' . number_format($discount_val, 0, ',', '.') . 'đ';
+
+                    $min_order = (float)($cp['total_amount'] ?? 0);
+                    $min_order_text = $min_order > 0
+                        ? ' (Đơn từ ' . number_format($min_order, 0, ',', '.') . 'đ)'
+                        : ' (Mọi đơn hàng)';
+
+                    $xtpl->assign('COUPON_ITEM', array(
+                        'code' => htmlspecialchars((string)($cp['code'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                        'title' => htmlspecialchars((string)($cp['title'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                        'desc' => $discount_text . $min_order_text
+                    ));
+                    $xtpl->parse('main.coupons_code.coupon_tray.loop');
+                    $has_available_coupons = true;
+                }
+
+                if ($has_available_coupons) {
+                    $xtpl->parse('main.coupons_code.coupon_tray');
+                }
+            } catch (Exception $e) {
+                // Dam bao an toan tren PHP 8.2
+            }
+
             $xtpl->parse('main.coupons_code');
             $xtpl->parse('main.coupons_javascript');
         }
