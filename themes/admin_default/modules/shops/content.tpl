@@ -56,6 +56,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-md-4 control-label">Chất liệu giày</label>
+                            <div class="col-md-20">
+                                <input class="form-control" name="shoe_material" type="text" value="{rowcontent.shoe_material}" maxlength="255" placeholder="VD: Da thật Full-Grain, Vải lưới Mesh thoáng khí, Đế cao su non..." />
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-4 control-label">{LANG.weights}</label>
                             <div class="col-md-8">
                                 <div class="row">

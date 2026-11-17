@@ -375,6 +375,9 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     unset($array_images, $data_content['homeimgfile'], $data_content['otherimage']);
     $data_content['full_link'] = NV_MY_DOMAIN . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . $global_config['rewrite_exturl'], true);
 
+    // [DAY 5] Xử lý hiển thị Chất liệu giày (gán mặc định nếu sản phẩm cũ chưa nhập)
+    $data_content['shoe_material'] = !empty($data_content['shoe_material']) ? $data_content['shoe_material'] : 'Da tổng hợp cao cấp & Đế cao su chống trượt';
+
     $contents = nv_template_detail($data_content, $data_unit, $data_others, $array_other_view, $content_comment, $compare_id, $popup, $idtemplates, $array_keyword);
 } else {
     $nv_redirect = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;

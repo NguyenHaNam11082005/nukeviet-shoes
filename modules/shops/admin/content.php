@@ -65,6 +65,7 @@ $rowcontent = [
     'exptime' => 0,
     'archive' => 1,
     'product_code' => '',
+    'shoe_material' => '',
     'product_number' => 1,
     'product_price' => 1,
     'saleprice' => 0,
@@ -130,6 +131,7 @@ if (!empty($rowcontent['id'])) {
     $rowcontent['address'] = $rowcontent[NV_LANG_DATA . '_address'];
     $rowcontent['tag_title'] = $rowcontent[NV_LANG_DATA . '_tag_title'];
     $rowcontent['tag_description'] = $rowcontent[NV_LANG_DATA . '_tag_description'];
+    $rowcontent['shoe_material'] = isset($rowcontent['shoe_material']) ? $rowcontent['shoe_material'] : '';
     $rowcontent['group_id'] = $group_id_old = getGroupID($rowcontent['id']);
 
     $id_block_content = [];
@@ -278,6 +280,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $rowcontent['hometext'] = defined('NV_EDITOR') ? nv_nl2br($hometext, '') : nv_nl2br(nv_htmlspecialchars(strip_tags($hometext)), '<br />');
 
     $rowcontent['product_code'] = nv_substr($nv_Request->get_title('product_code', 'post', '', 1), 0, 255);
+    $rowcontent['shoe_material'] = nv_substr($nv_Request->get_title('shoe_material', 'post', '', 1), 0, 255);
     $rowcontent['money_unit'] = $nv_Request->get_string('money_unit', 'post', 'VND');
 
     $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
@@ -555,7 +558,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
         $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (
             listcatid, user_id, addtime, edittime, status, publtime, exptime, archive,
-            product_code, product_number, product_price, price_config, saleprice,
+            product_code, shoe_material, product_number, product_price, price_config, saleprice,
             money_unit, product_unit, product_weight, weight_unit, discount_id,
             homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright,
             inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print,
@@ -570,6 +573,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
              " . intval($rowcontent['exptime']) . ",
              " . intval($rowcontent['archive']) . ",
              :product_code,
+             :shoe_material,
              " . intval($rowcontent['product_number']) . ",
              :product_price,
              :price_config,
@@ -602,6 +606,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         $data_insert = [];
         $data_insert['listcatid'] = $rowcontent['listcatid'];
         $data_insert['product_code'] = $rowcontent['product_code'];
+        $data_insert['shoe_material'] = $rowcontent['shoe_material'];
         $data_insert['product_price'] = $rowcontent['product_price'];
         $data_insert['price_config'] = $rowcontent['price_config'];
         $data_insert['saleprice'] = $rowcontent['saleprice'];
@@ -737,6 +742,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
              edittime= " . NV_CURRENTTIME . " ,
              archive=" . intval($rowcontent['archive']) . ",
              product_code = :product_code,
+             shoe_material = :shoe_material,
              product_number = " . intval($rowcontent['product_number']) . ",
              product_price = :product_price,
              price_config = :price_config,
@@ -773,6 +779,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
         $stmt->bindParam(':listcatid', $rowcontent['listcatid'], PDO::PARAM_STR);
         $stmt->bindParam(':product_code', $rowcontent['product_code'], PDO::PARAM_STR);
+        $stmt->bindParam(':shoe_material', $rowcontent['shoe_material'], PDO::PARAM_STR);
         $stmt->bindParam(':money_unit', $rowcontent['money_unit'], PDO::PARAM_STR);
         $stmt->bindParam(':product_price', $rowcontent['product_price'], PDO::PARAM_STR);
         $stmt->bindParam(':price_config', $rowcontent['price_config'], PDO::PARAM_INT);
