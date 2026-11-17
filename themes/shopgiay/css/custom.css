@@ -1,0 +1,533 @@
+/**
+ * NukeViet Content Management System
+ * @version 4.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2021 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
+ */
+
+/* Các tùy chỉnh CSS của giao diện nên để vào đây */
+/* ==========================================================================
+   CUSTOM THEME: SHOP GIÀY CHÍNH HÃNG (NUKEVIET 4.6.02)
+   ========================================================================== */
+
+:root {
+    --shoe-primary: #ff3e3e;
+    --shoe-primary-hover: #d62828;
+    --shoe-dark: #111111;
+    --shoe-gray: #f5f5f7;
+    --shoe-text: #222222;
+}
+
+body {
+    color: var(--shoe-text);
+    background-color: #fafafa;
+}
+
+/* 1. Tùy biến Header & Thanh Topbar */
+#header, .header-nav {
+    background-color: #ffffff !important;
+    border-bottom: 2px solid var(--shoe-primary);
+}
+
+/* 2. Thanh Menu chính (Navigation Bar) */
+.navbar-default, #menusite .navbar {
+    background-color: var(--shoe-dark) !important;
+    border-color: var(--shoe-dark) !important;
+    border-radius: 0;
+}
+
+#menusite .navbar-nav > li > a {
+    color: #ffffff !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+}
+
+#menusite .navbar-nav > li > a:hover,
+#menusite .navbar-nav > .active > a {
+    background-color: var(--shoe-primary) !important;
+    color: #ffffff !important;
+}
+
+/* 3. Tiêu đề các Khối sản phẩm */
+.panel-default > .panel-heading,
+.shops-cat-header {
+    background-color: var(--shoe-dark) !important;
+    color: #ffffff !important;
+    border-left: 5px solid var(--shoe-primary) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+.panel-default > .panel-heading a {
+    color: #ffffff !important;
+}
+
+/* 4. Nút bấm & Giá tiền */
+.btn-primary, .btn-order {
+    background-color: var(--shoe-primary) !important;
+    border-color: var(--shoe-primary) !important;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary:hover, .btn-order:hover {
+    background-color: var(--shoe-primary-hover) !important;
+    border-color: var(--shoe-primary-hover) !important;
+    transform: translateY(-2px);
+}
+
+.price, .money-sale {
+    color: var(--shoe-primary) !important;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/* 5. Khung thẻ sản phẩm */
+.thumbnail {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.thumbnail:hover {
+    box-shadow: 0 12px 24px rgba(17, 17, 17, 0.12);
+    transform: translateY(-5px);
+    border-color: var(--shoe-primary);
+}
+
+/* ==========================================================================
+   6. TĂNG KÍCH THƯỚC ẢNH BLOCK SẢN PHẨM NỔI BẬT
+   ========================================================================== */
+
+/* Căn giữa ảnh trong khung sản phẩm nổi bật */
+#product_center_nv12-iw .items a.img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+}
+
+/* Tăng kích thước ảnh giày */
+#product_center_nv12-iw .items a.img img.thumbnail {
+    width: 220px !important;
+    height: 220px !important;
+    max-width: 100% !important;
+    object-fit: contain;
+    padding: 8px;
+    margin: 0 auto;
+    display: block;
+    background-color: #ffffff;
+}
+
+/* Hiệu ứng khi di chuột vào ảnh nổi bật */
+#product_center_nv12-iw .items a.img img.thumbnail:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Điều chỉnh kích thước ảnh trên điện thoại */
+@media (max-width: 767px) {
+    #product_center_nv12-iw .items a.img img.thumbnail {
+        width: 170px !important;
+        height: 170px !important;
+    }
+}
+
+/* 7. Tùy biến Footer */
+#footer {
+    background-color: var(--shoe-dark) !important;
+    color: #cccccc !important;
+    border-top: 4px solid var(--shoe-primary);
+    padding-top: 30px;
+}
+
+#footer a {
+    color: #bbbbbb !important;
+}
+
+#footer a:hover {
+    color: var(--shoe-primary) !important;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   [DAY 4] 8. NHÃN % GIẢM GIÁ TỰ ĐỘNG, HIỆU ỨNG HOVER & NÚT MUA NHANH
+   ========================================================================== */
+.shoe-img-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.thumbnail img {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.thumbnail:hover img {
+    transform: scale(1.07);
+}
+
+/* Nhãn % giảm giá nổi bật trên góc phải ảnh giày */
+.shoe-sale-badge {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    background: linear-gradient(135deg, #ff3e3e, #d61f1f) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    padding: 5px 11px !important;
+    border-radius: 20px !important;
+    z-index: 15 !important;
+    box-shadow: 0 3px 8px rgba(255, 62, 62, 0.35);
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* Nút Mua nhanh hiện lên khi Hover vào thẻ giày */
+.shoe-quick-action {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 14;
+}
+
+.thumbnail:hover .shoe-quick-action {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.btn-quick-buy {
+    display: inline-block;
+    background: rgba(17, 17, 17, 0.92);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 20px;
+    text-decoration: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background 0.25s ease;
+}
+
+.btn-quick-buy:hover {
+    background: var(--shoe-primary);
+    color: #ffffff !important;
+}
+
+.price .money {
+    color: var(--shoe-primary) !important;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.price .discounts_money {
+    color: #888888 !important;
+    text-decoration: line-through;
+    font-size: 13px;
+    margin-left: 6px;
+    font-weight: 400;
+}
+
+/* ==========================================================================
+   [DAY 4] 9. POPUP BẢNG QUY ĐỔI CỠ CHÂN (SIZE GUIDE MODAL)
+   ========================================================================== */
+.size-guide-trigger-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #f8f9fa;
+    border: 1px dashed #d0d5dd;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px 0;
+}
+
+.size-guide-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--shoe-dark);
+}
+
+.btn-open-size-guide {
+    background: var(--shoe-dark);
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-open-size-guide:hover {
+    background: var(--shoe-primary);
+}
+
+.shoe-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.shoe-modal-overlay.active {
+    display: flex;
+}
+
+.shoe-modal-box {
+    background: #ffffff;
+    width: 100%;
+    max-width: 620px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    animation: shoeModalFadeIn 0.25s ease-out;
+}
+
+@keyframes shoeModalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.shoe-modal-header {
+    background: var(--shoe-dark);
+    color: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--shoe-primary);
+}
+
+.shoe-modal-header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.shoe-modal-close {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.shoe-modal-close:hover {
+    color: var(--shoe-primary);
+}
+
+.shoe-modal-body {
+    padding: 18px 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.size-calc-box {
+    background: #fff5f5;
+    border: 1px solid #ffd6d6;
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+}
+
+.size-calc-input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.size-calc-input-group input {
+    width: 150px;
+    padding: 6px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.size-calc-result {
+    font-size: 13px;
+    color: #555555;
+}
+
+.size-calc-result.matched strong {
+    color: var(--shoe-primary);
+    font-size: 15px;
+}
+
+.shoe-size-table th {
+    background: #f1f3f5;
+    text-align: center;
+    font-weight: 700;
+    color: var(--shoe-dark);
+}
+
+.shoe-size-table td {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.shoe-size-table tr.recommended-row td {
+    background: #ffe3e3 !important;
+    color: #d61f1f;
+    font-weight: 700;
+}
+
+.size-measure-steps {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.size-measure-steps ul {
+    padding-left: 18px;
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   [DAY 6] 10. RÀNG BUỘC CHỌN SIZE GIÀY & KHAY CHỌN NHANH MÃ GIẢM GIÁ (COUPON TRAY)
+   ========================================================================== */
+.shoe-size-error-highlight {
+    border: 2px dashed var(--shoe-primary) !important;
+    background-color: #fff5f5 !important;
+    border-radius: 6px !important;
+    animation: shoeShake 0.4s ease-in-out;
+}
+
+.shoe-size-error-msg {
+    color: var(--shoe-primary);
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+    display: none;
+}
+
+@keyframes shoeShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+}
+
+.shoe-coupon-tray {
+    margin: 14px 0;
+    padding: 12px 15px;
+    background: #fff8f8;
+    border: 1px dashed var(--shoe-primary);
+    border-radius: 8px;
+}
+
+.shoe-coupon-tray-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--shoe-dark);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shoe-coupon-tray-title i {
+    color: var(--shoe-primary);
+    font-size: 15px;
+}
+
+.shoe-coupon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.shoe-coupon-ticket {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #ffd6d6;
+    border-left: 4px solid var(--shoe-primary);
+    border-radius: 6px;
+    padding: 7px 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.shoe-coupon-ticket:hover {
+    transform: translateY(-2px);
+    border-color: var(--shoe-primary);
+    box-shadow: 0 4px 10px rgba(255, 62, 62, 0.16);
+}
+
+.shoe-coupon-info {
+    margin-right: 10px;
+    line-height: 1.35;
+}
+
+.shoe-coupon-code {
+    font-weight: 800;
+    color: var(--shoe-primary);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+.shoe-coupon-desc {
+    font-size: 11px;
+    color: #555555;
+    display: block;
+}
+
+.shoe-coupon-btn {
+    background: var(--shoe-dark);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 9px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.shoe-coupon-ticket:hover .shoe-coupon-btn {
+    background: var(--shoe-primary);
+}
