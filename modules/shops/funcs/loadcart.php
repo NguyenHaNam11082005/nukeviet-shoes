@@ -16,6 +16,8 @@ $num = isset($_SESSION[$module_data . '_cart']) ? count($_SESSION[$module_data .
 $total = 0;
 $total_old = 0;
 $total_coupons = 0;
+$total_shoes_qty = 0;
+$combo_discount = 0;
 
 $array_products = [];
 $get_list_product = $nv_Request->get_int('get_list_product', 'get', 0);
@@ -53,7 +55,9 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
         $array = explode('_', $pro_id);
         $pro_id = $array[0];
         $array_product_id[] = $pro_id;
-        $price = nv_get_price($pro_id, $pro_config['money_unit'], $info['num']);
+        $qty_item = (int)($info['num'] ?? 0);
+        $total_shoes_qty += $qty_item;
+        $price = nv_get_price($pro_id, $pro_config['money_unit'], $qty_item);
         // Ap dung giam gia cho tung san pham dac biet
         if (!empty($counpons['product'])) {
             if (in_array($pro_id, $counpons['product'])) {
@@ -89,7 +93,7 @@ if ($get_list_product && !empty($array_product_id)) {
     }
 }
 
-if ((empty($counpons['total_amount']) or $total >= $counpons['total_amount']) and NV_CURRENTTIME >= $counpons['date_start'] and (empty($counpons['uses_per_coupon']) or $counpons['uses_per_coupon_count'] < $counpons['uses_per_coupon']) and (empty($counpons['date_end']) or NV_CURRENTTIME < $counpons['date_end'])) {
+if (!empty($counpons) && (empty($counpons['total_amount']) or $total >= $counpons['total_amount']) and NV_CURRENTTIME >= $counpons['date_start'] and (empty($counpons['uses_per_coupon']) or $counpons['uses_per_coupon_count'] < $counpons['uses_per_coupon']) and (empty($counpons['date_end']) or NV_CURRENTTIME < $counpons['date_end'])) {
     // Ap dung giam gia cho tung san pham dac biet
     if ($total_coupons > 0) {
         if ($counpons['type'] == 'p') {
@@ -103,7 +107,6 @@ if ((empty($counpons['total_amount']) or $total >= $counpons['total_amount']) an
         }
     } else {
         // Ap dung cho don hang
-
         if ($counpons['type'] == 'p') {
             if ($coupons_check) {
                 $total = $total - (($total * $counpons['discount']) / 100);
@@ -117,6 +120,15 @@ if ((empty($counpons['total_amount']) or $total >= $counpons['total_amount']) an
 
     if ($coupons_check) {
         $_SESSION[$module_data . '_coupons']['discount'] = $total_old - $total;
+    }
+}
+
+// [CUSTOM DAY 7] Tu dong giam them 10% khi mua Combo tu 2 doi giay tro len
+if ($total_shoes_qty >= 2 && $total_old > 0) {
+    $combo_discount = round($total_old * 0.10);
+    $total -= $combo_discount;
+    if ($total < 0) {
+        $total = 0;
     }
 }
 
@@ -137,7 +149,9 @@ if ($pro_config['active_price'] == '0') {
     $total = 0;
 }
 
-$total = nv_number_format($total, nv_get_decimals($pro_config['money_unit']));
+$decimals = nv_get_decimals($pro_config['money_unit']);
+$total = nv_number_format($total, $decimals);
+$combo_discount_format = nv_number_format($combo_discount, $decimals);
 
 $lang_tmp['cart_title'] = $lang_module['cart_title'];
 $lang_tmp['cart_product_title'] = $lang_module['cart_product_title'];
@@ -186,6 +200,13 @@ switch ($type) {
         break;
     case 2:
         echo $total;
+        break;
+    case 3:
+        if ($total_shoes_qty >= 2 && $combo_discount > 0) {
+            echo '<div class="alert alert-success" style="padding: 8px 14px; margin-bottom: 10px; border-left: 4px solid #28a745; font-size: 14px;"><i class="fa fa-gift"></i> <strong>Ưu đãi Combo (' . $total_shoes_qty . ' đôi):</strong> Đã tự động giảm thêm <strong>10% (-' . $combo_discount_format . ' ' . $pro_config['money_unit'] . ')</strong></div>';
+        } else {
+            echo '<div class="alert alert-warning" style="padding: 8px 14px; margin-bottom: 10px; border-left: 4px solid #ff9800; font-size: 13px;"><i class="fa fa-fire"></i> Mua từ <strong>2 đôi giày trở lên</strong> để được tự động giảm thêm <strong>10%</strong> tổng giá trị đơn hàng!</div>';
+        }
         break;
     default:
         echo $content;

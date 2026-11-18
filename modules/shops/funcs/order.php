@@ -48,8 +48,6 @@ $data_order = [
     ]
 ];
 
-
-
 // Lấy thông tin đặt hàng đã điền ở SESSION trước đó
 if (isset($_SESSION[$module_data . '_order_info']) and ! empty($_SESSION[$module_data . '_order_info'])) {
     $order_info = $_SESSION[$module_data . '_order_info'];
@@ -105,6 +103,9 @@ if ($nv_Request->isset_request('postorder', 'post')) {
     $total_point = 0;
     $total_weight = 0;
     $total_weight_price = 0;
+    $total_shoes_qty = 0;
+    $combo_discount = 0;
+    $coupon_discount_amount = 0;
     $i = 0;
     $listid = $listnum = $listprice = $listgroup = $listid_old = $listnum_old = [];
 
@@ -116,7 +117,9 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             $info['price'] = 0;
         }
         if ($_SESSION[$module_data . '_cart'][$proid]['order'] == 1) {
-            $price = nv_get_price($pro_id, $pro_config['money_unit'], (int) $info['num']);
+            $qty_item = (int) $info['num'];
+            $total_shoes_qty += $qty_item;
+            $price = nv_get_price($pro_id, $pro_config['money_unit'], $qty_item);
 
             // Ap dung giam gia cho tung san pham dac biet
             if (! empty($counpons['product'])) {
@@ -138,7 +141,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
 
             $info['price'] = $price['sale'];
             $total = $total + (double) $info['price'];
-            $total_weight = $total_weight + nv_weight_conversion((double) $info['weight'], $info['weight_unit'], $pro_config['weight_unit'], (int) $info['num']);
+            $total_weight = $total_weight + nv_weight_conversion((double) $info['weight'], $info['weight_unit'], $pro_config['weight_unit'], $qty_item);
 
             $i ++;
         }
@@ -166,7 +169,8 @@ if ($nv_Request->isset_request('postorder', 'post')) {
     }
     $total += $total_weight_price;
 
-    if (($total >= $counpons['total_amount'] or empty($total)) and NV_CURRENTTIME >= $counpons['date_start'] and ($counpons['uses_per_coupon_count'] < $counpons['uses_per_coupon'] or empty($counpons['uses_per_coupon'])) and (empty($counpons['date_end']) or NV_CURRENTTIME < $counpons['date_end'])) {
+    if (!empty($counpons['id']) and ($total >= $counpons['total_amount'] or empty($total)) and NV_CURRENTTIME >= $counpons['date_start'] and ($counpons['uses_per_coupon_count'] < $counpons['uses_per_coupon'] or empty($counpons['uses_per_coupon'])) and (empty($counpons['date_end']) or NV_CURRENTTIME < $counpons['date_end'])) {
+        $total_before_coupon = $total;
         // Ap dung giam gia cho tung san pham dac biet
         if ($total_coupons > 0) {
             if ($counpons['type'] == 'p') {
@@ -176,13 +180,24 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             }
         } else {
             // Ap dung cho don hang
-
             if ($counpons['type'] == 'p') {
                 $total = $total - (($total * $counpons['discount']) / 100);
             } else {
                 $total = $total - $counpons['discount'];
             }
         }
+        $coupon_discount_amount = $total_before_coupon - $total;
+    }
+
+    // [CUSTOM DAY 7] Tu dong giam them 10% khi mua Combo tu 2 doi giay tro len
+    if ($total_shoes_qty >= 2 && $total_old > 0) {
+        $combo_discount = round($total_old * 0.10);
+        $total -= $combo_discount;
+        if ($total < 0) {
+            $total = 0;
+        }
+        $combo_note_str = '[Ưu đãi Combo ' . $total_shoes_qty . ' đôi: Tự động giảm 10% (-' . nv_number_format($combo_discount, nv_get_decimals($pro_config['money_unit'])) . ' ' . $pro_config['money_unit'] . ')]';
+        $data_order['order_note'] = trim($data_order['order_note'] . ' ' . $combo_note_str);
     }
 
     $data_order['order_total'] = $total;
@@ -391,10 +406,10 @@ if ($nv_Request->isset_request('postorder', 'post')) {
                 // Them don hang
 
                 // Cap nhat lich su su dung ma giam gia
-                if (! empty($array_counpons['code'])) {
+                if (! empty($array_counpons['code']) and !empty($counpons['id'])) {
                     $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_coupons SET uses_per_coupon_count = uses_per_coupon_count + 1 WHERE id = ' . $counpons['id']);
 
-                    $amount = $total_old - $total;
+                    $amount = $coupon_discount_amount > 0 ? $coupon_discount_amount : ($total_old - $total);
                     $stmt = $db->prepare('INSERT INTO ' . $db_config['prefix'] . '_' . $module_data . '_coupons_history( cid, order_id, amount, date_added ) VALUES ( :cid, :order_id, :amount, ' . NV_CURRENTTIME . ' )');
                     $stmt->bindParam(':cid', $counpons['id'], PDO::PARAM_INT);
                     $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);

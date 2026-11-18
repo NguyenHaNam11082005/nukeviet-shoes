@@ -191,6 +191,9 @@
                 </tbody>
             </table>
         </div>
+        <!-- [CUSTOM DAY 7] Hien thi thong bao uu dai giam 10% Combo tai trang Dat hang -->
+        <div id="combo_discount_order_box" class="clearfix"></div>
+
         <!-- BEGIN: price3 -->
         <!-- BEGIN: total_coupons -->
         <p class="pull-right">
@@ -198,9 +201,10 @@
         </p>
         <div class="clear"></div>
         <!-- END: total_coupons -->
-        <p class="pull-right">
-            {LANG.cart_total}: <strong id="total">{price_total}</strong> {unit_config}
+        <p class="pull-right" style="font-size: 16px;">
+            {LANG.cart_total}: <strong id="total" style="color: #ff3e3e;">{price_total}</strong> {unit_config}
         </p>
+        <div class="clear"></div>
         <!-- END: price3 -->
         <label>{LANG.order_note}</label>
         <textarea class="form-control m-bottom" name="order_note">{DATA.order_note}</textarea>
@@ -219,6 +223,9 @@
         $("#location").select2({
             language : "{NV_LANG_INTERFACE}"
         });
+
+        $("#combo_discount_order_box").load(urloadcart + '&t=3');
+        $("#total").load(urloadcart + '&coupons_check=1&coupons_code={COUPONS_CODE}&t=2');
         
         $("#fpost").submit(function(e) {
             e.preventDefault();
@@ -269,6 +276,7 @@
             nv_get_price();
             $('#shipping_form').slideDown();
         } else {
+            $("#total").load(urloadcart + '&coupons_check=1&coupons_code={COUPONS_CODE}&t=2');
             $('#shipping_form').slideUp();
         }
     });

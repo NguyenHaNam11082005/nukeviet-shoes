@@ -138,6 +138,7 @@ if ($nv_Request->get_int('save', 'post', 0) == 1) {
 
 $data_content = [];
 $array_error_product_number = [];
+$total_shoes_qty = 0;
 
 if (!empty($_SESSION[$module_data . '_cart'])) {
     $arrayid = [];
@@ -227,7 +228,18 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
                     'link_remove' => $link . 'remove&id=' . $id . '&group=' . $group
                 );
                 $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['order'] = 1;
+
+                // [CUSTOM DAY 7] Cộng dồn tổng số lượng đôi giày trong giỏ hàng
+                $total_shoes_qty += (int)$number;
             }
+
+            // [CUSTOM DAY 7] Lưu trạng thái ưu đãi Combo (Mua từ 2 đôi giảm 10%) vào Session
+            $_SESSION[$module_data . '_combo_discount'] = [
+                'active' => ($total_shoes_qty >= 2) ? 1 : 0,
+                'total_qty' => $total_shoes_qty,
+                'percent' => ($total_shoes_qty >= 2) ? 10 : 0
+            ];
+
             if (empty($array_error_product_number) and $nv_Request->isset_request('cart_order', 'post')) {
                 nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order', true);
             }

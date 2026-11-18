@@ -154,10 +154,13 @@
 	<!-- END: coupons_code -->
 
 	<div>
+		<!-- [CUSTOM DAY 7] Hien thi thong bao uu dai giam 10% khi mua Combo >= 2 doi -->
+		<div id="combo_discount_box"></div>
+
 		<!-- BEGIN: price3 -->
 		<div class="clearfix">
-			<div class="pull-left">
-				{LANG.cart_total}: <span id="total"></span> {unit_config}
+			<div class="pull-left" style="font-size: 16px; font-weight: bold;">
+				{LANG.cart_total}: <span id="total" style="color: #ff3e3e;"></span> {unit_config}
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -181,6 +184,7 @@
 
 	var urload = nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=loadcart';
 	$("#total").load(urload + '&t=2');
+	$("#combo_discount_box").load(urload + '&t=3');
 
 	$(function() {
 		$("a.remove_cart").click(function() {
@@ -194,6 +198,7 @@
 						$("#" + data).html('');
 						$("#cart_" + nv_module_name).load(urload);
 						$("#total").load(urload + '&t=2');
+						$("#combo_discount_box").load(urload + '&t=3');
 					}
 				}
 			});
