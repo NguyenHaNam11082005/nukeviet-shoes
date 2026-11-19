@@ -378,6 +378,49 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     // [DAY 5] Xử lý hiển thị Chất liệu giày (gán mặc định nếu sản phẩm cũ chưa nhập)
     $data_content['shoe_material'] = !empty($data_content['shoe_material']) ? $data_content['shoe_material'] : 'Da tổng hợp cao cấp & Đế cao su chống trượt';
 
+    // [CUSTOM DAY 8] Fallback Meta Description, Alt ảnh & Schema Product JSON-LD
+    if (empty(trim(strip_tags((string)$description)))) {
+        $description = 'Mua ' . ($data_content[NV_LANG_DATA . '_title'] ?? 'giày chính hãng') . ' tại Shop Giày Chính Hãng. Chất liệu ' . $data_content['shoe_material'] . ', đủ size 38-43, ưu đãi combo giảm 10% khi mua từ 2 đôi.';
+    }
+    if (empty($data_content['homeimgalt'])) {
+        $data_content['homeimgalt'] = $data_content[NV_LANG_DATA . '_title'] ?? 'Giày chính hãng';
+    }
+
+    $schema_images = [];
+    if (!empty($data_content['image'])) {
+        foreach ($data_content['image'] as $_img) {
+            if (!empty($_img['file'])) {
+                $schema_images[] = (strpos($_img['file'], 'http') === 0) ? $_img['file'] : NV_MY_DOMAIN . $_img['file'];
+            }
+        }
+    }
+    $schema_price = isset($data_content['product_price']) ? (float)$data_content['product_price'] : 0;
+    $schema_stock = (isset($data_content['product_number']) && (int)$data_content['product_number'] > 0)
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock';
+
+    $product_schema = [
+        '@context' => 'https://schema.org/',
+        '@type' => 'Product',
+        'name' => $data_content[NV_LANG_DATA . '_title'] ?? '',
+        'image' => $schema_images,
+        'description' => trim(strip_tags((string)$description)),
+        'sku' => !empty($data_content['product_code']) ? $data_content['product_code'] : ('SP-' . $id),
+        'material' => $data_content['shoe_material'],
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => 'Shop Giày Chính Hãng'
+        ],
+        'offers' => [
+            '@type' => 'Offer',
+            'url' => $data_content['full_link'],
+            'priceCurrency' => 'VND',
+            'price' => $schema_price,
+            'availability' => $schema_stock
+        ]
+    ];
+    $my_head = ($my_head ?? '') . "\n" . '<script type="application/ld+json">' . json_encode($product_schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+
     $contents = nv_template_detail($data_content, $data_unit, $data_others, $array_other_view, $content_comment, $compare_id, $popup, $idtemplates, $array_keyword);
 } else {
     $nv_redirect = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;

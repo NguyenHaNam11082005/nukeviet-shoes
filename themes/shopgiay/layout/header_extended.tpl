@@ -1,7 +1,7 @@
-    <noscript>
+<noscript>
         <div class="alert alert-danger">{LANG.nojs}</div>
     </noscript>
-    <header>
+    <header id="top">
         <div class="site-banner" style="background-image: url('{BANNER_SRC}');"></div>
         <div class="section-header-bar">
             <div class="wraper">
@@ -57,10 +57,6 @@
         </div>
     </div>
 
-
-
-
-
 <!-- Khối cam kết dịch vụ Shop Giày -->
 <div class="shoe-trust-bar" style="background: #f0f0f0; padding: 10px 0; border-bottom: 1px solid #ddd; font-size: 13px; font-weight: 600; text-align: center;">
     <div class="container">
@@ -81,17 +77,11 @@
     </div>
 </div>
 
-
-
-
-
-
-
     <div class="section-body">
         <div class="wraper">
             <section>
                 <div class="container" id="body">
-                    <nav class="third-nav">
+                    <nav class="third-nav" aria-label="Breadcrumb">
                         <div class="row">
                             <div class="bg">
                             <div class="clearfix">
@@ -99,7 +89,7 @@
                                     <!-- BEGIN: breadcrumbs -->
                                     <div class="breadcrumbs-wrap">
                                         <div class="display">
-                                            <a class="show-subs-breadcrumbs hidden" href="#" onclick="showSubBreadcrumbs(this, event);"><em class="fa fa-lg fa-angle-right"></em></a>
+                                            <a class="show-subs-breadcrumbs hidden" href="#breadcrumbs" title="Mở rộng điều hướng" aria-label="Mở rộng điều hướng" onclick="showSubBreadcrumbs(this, event);"><em class="fa fa-lg fa-angle-right"></em></a>
                                             <ul class="breadcrumbs list-none"></ul>
                                         </div>
                                         <ul class="subs-breadcrumbs"></ul>
@@ -113,7 +103,7 @@
                                 </div>
                                 <div class="headerSearch col-xs-24 col-sm-6 col-md-6">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" maxlength="{NV_MAX_SEARCH_LENGTH}" placeholder="{LANG.search}..."><span class="input-group-btn"><button type="button" class="btn btn-info" data-url="{THEME_SEARCH_URL}" data-minlength="{NV_MIN_SEARCH_LENGTH}" data-click="y"><em class="fa fa-search fa-lg"></em></button></span>
+                                        <input type="text" class="form-control" maxlength="{NV_MAX_SEARCH_LENGTH}" placeholder="{LANG.search}..." aria-label="{LANG.search}"><span class="input-group-btn"><button type="button" class="btn btn-info" data-url="{THEME_SEARCH_URL}" data-minlength="{NV_MIN_SEARCH_LENGTH}" data-click="y" title="{LANG.search}" aria-label="{LANG.search}"><em class="fa fa-search fa-lg"></em></button></span>
                                     </div>
                                 </div>
                             </div>

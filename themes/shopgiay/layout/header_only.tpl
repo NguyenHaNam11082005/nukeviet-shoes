@@ -11,12 +11,22 @@
         <!-- BEGIN: js -->
         <script<!-- BEGIN: ext --> src="{JS_SRC}"<!-- END: ext -->><!-- BEGIN: int -->{JS_CONTENT}<!-- END: int --></script>
         <!-- END: js -->
+        <!-- [CUSTOM DAY 8] Schema Markup ShoeStore -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "Organization",
-            "url": "{NV_MY_DOMAIN}",
-            "logo": "{NV_MY_DOMAIN}{LOGO_SRC}"
+            "@type": "ShoeStore",
+            "name": "Shop Giày Chính Hãng",
+            "url": "{NV_MY_DOMAIN}/shopgiay/",
+            "logo": "{NV_MY_DOMAIN}{LOGO_SRC}",
+            "image": "{NV_MY_DOMAIN}{LOGO_SRC}",
+            "description": "Chuyên cung cấp giày Sneaker, giày chạy bộ, giày tây chính hãng Nike, Adidas, Puma. Đổi size miễn phí, ưu đãi combo giảm 10% khi mua từ 2 đôi.",
+            "priceRange": "500.000đ - 5.000.000đ",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Hà Nội",
+                "addressCountry": "VN"
+            }
         }
         </script>
     </head>

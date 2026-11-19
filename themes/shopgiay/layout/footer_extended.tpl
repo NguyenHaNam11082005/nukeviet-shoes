@@ -1,4 +1,3 @@
-```html
 </div>
             </section>
         </div>
@@ -18,9 +17,9 @@
                         <div class="col-xs-24 col-sm-24 col-md-8">
                             <h4 style="color: #fff; font-weight: bold;">DANH MỤC NỔI BẬT</h4>
                             <ul class="list-unstyled">
-                                <li><a href="{NV_BASE_SITEURL}index.php?nv=shops">• Giày Sneaker Năng Động</a></li>
-                                <li><a href="{NV_BASE_SITEURL}index.php?nv=shops">• Giày Chạy Bộ Chuyên Nghiệp</a></li>
-                                <li><a href="{NV_BASE_SITEURL}index.php?nv=shops">• Giày Tây Lịch Lãm</a></li>
+                                <li><a href="{NV_BASE_SITEURL}shops/">• Giày Sneaker Năng Động</a></li>
+                                <li><a href="{NV_BASE_SITEURL}shops/">• Giày Chạy Bộ Chuyên Nghiệp</a></li>
+                                <li><a href="{NV_BASE_SITEURL}shops/">• Giày Tây Lịch Lãm</a></li>
                             </ul>
                         </div>
 
@@ -72,7 +71,7 @@
                 <div class="theme-change">
                 <!-- BEGIN: loop -->
                     <!-- BEGIN: other -->
-                    <a href="{STHEME_TYPE}" rel="nofollow" title="{STHEME_INFO}"><i class="fa fa-{STHEME_ICON}"></i></a>
+                    <a href="{STHEME_TYPE}" rel="nofollow" title="{STHEME_INFO}" aria-label="{STHEME_INFO}"><i class="fa fa-{STHEME_ICON}"></i></a>
                     <!-- END: other -->
                     <!-- BEGIN: current -->
                     <span title="{LANG.theme_type_select}: {STHEME_TITLE}"><i class="fa fa-{STHEME_ICON}"></i></span>
@@ -81,7 +80,7 @@
                 </div>
                 <!-- END: theme_type -->
                 <div class="bttop">
-                    <a class="pointer"><i class="fa fa-eject fa-lg"></i></a>
+                    <a href="#top" class="pointer" title="Lên đầu trang" aria-label="Lên đầu trang"><i class="fa fa-eject fa-lg"></i></a>
                 </div>
             </div>
         </div>
@@ -96,7 +95,7 @@
                 <div class="modal-body">
                     <i class="fa fa-spinner fa-spin"></i>
                 </div>
-                <button type="button" class="close" data-dismiss="modal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
                     <span class="fa fa-times"></span>
                 </button>
             </div>
@@ -110,4 +109,3 @@
     <div class="fix_banner_right">
         [FIX_BANNER_RIGHT]
     </div>
-```

@@ -1,23 +1,23 @@
 <!-- BEGIN: main -->
 <script type="text/javascript" src="{NV_STATIC_URL}themes/default/images/{MODULE_FILE}/jquery.ez-plus.js"></script>
-<div class="product-detail <!-- BEGIN: popupid -->prodetail-popup<!-- END: popupid -->" itemtype="http://schema.org/Product" itemscope>
+<div class="product-detail <!-- BEGIN: popupid -->prodetail-popup<!-- END: popupid -->" itemtype="https://schema.org/Product" itemscope>
     <span class="d-none hidden hide" itemprop="mpn" content="{PRODUCT_CODE}"></span>
     <span class="d-none hidden hide" itemprop="sku" content="{PRODUCT_CODE}"></span>
-    <div class="d-none hidden hide" itemprop="brand" itemtype="http://schema.org/Thing" itemscope>
-        <span itemprop="name">N/A</span>
+    <div class="d-none hidden hide" itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+        <span itemprop="name">Shop Giày Chính Hãng</span>
     </div>
     <!-- BEGIN: allowed_rating_snippets -->
-    <div class="d-none hidden hide" itemprop="aggregateRating" itemtype="http://schema.org/AggregateRating" itemscope>
+    <div class="d-none hidden hide" itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
         <span itemprop="reviewCount">{RATE_TOTAL}</span>
         <span itemprop="ratingValue">{RATE_VALUE}</span>
     </div>
     <!-- END: allowed_rating_snippets -->
-    <div class="d-none hidden hide" itemprop="offers" itemtype="http://schema.org/Offer" itemscope>
+    <div class="d-none hidden hide" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
         <!-- BEGIN: price1 -->
         <span itemprop="price">{PRICE.sale}</span>
         <span itemprop="priceCurrency">{PRICE.unit}</span>
         <!-- END: price1 -->
-        <a itemprop="url" href="{PRO_FULL_LINK}"></a>
+        <a itemprop="url" href="{PRO_FULL_LINK}" aria-label="{TITLE}">{TITLE}</a>
         <span itemprop="priceValidUntil">{PRICEVALIDUNTIL}</span>
         <span itemprop="availability">{AVAILABILITY}</span>
     </div>
@@ -55,7 +55,7 @@
                             <!-- BEGIN: loop1 -->
                             <div class="item<!-- BEGIN: active --> active<!-- END: active -->" data-item="{IMAGE_STT}">
                                 <div class="item-inner">
-                                    <a href="#" class="item-click-change" data-offset="{IMAGE_STT}"><img src="{IMAGE.thumb}" alt="{DATA.homeimgalt} thumb"></a>
+                                    <a href="#img-{IMAGE_STT}" class="item-click-change" data-offset="{IMAGE_STT}" aria-label="Xem ảnh {DATA.homeimgalt} {IMAGE_STT}"><img src="{IMAGE.thumb}" alt="{DATA.homeimgalt} thumb"></a>
                                 </div>
                             </div>
                             <!-- END: loop1 -->
@@ -116,7 +116,7 @@
                         <div class="panel-body">
                             <div class="socialicon">
                                 <div class="fb-like" data-href="{SELFURL}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true">&nbsp;</div>
-                                <a href="http://twitter.com/share" class="twitter-share-button">Tweet</a>
+                                <a href="https://twitter.com/share" class="twitter-share-button" rel="noopener">Tweet</a>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         </li>
                         <!-- END: price -->
                         <!-- BEGIN: product_weight -->
-                        <li class="info-weight">{LANG.weights}: <strong>{PRODUCT_WEIGHT}</strong>&nbsp<span>{WEIGHT_UNIT}</span></li>
+                        <li class="info-weight">{LANG.weights}: <strong>{PRODUCT_WEIGHT}</strong>&nbsp;<span>{WEIGHT_UNIT}</span></li>
                         <!-- END: product_weight -->
                         <!-- BEGIN: contact -->
                         <li class="info-priceno">{LANG.detail_pro_price}: <span class="money">{LANG.price_contact}</span></li>
@@ -271,7 +271,7 @@
                         <div class="row">
                             <div class="col-xs-8 col-sm-5">{LANG.detail_pro_number}</div>
                             <div class="col-xs-16 col-sm-19">
-                                <input type="number" name="num" value="1" min="1" id="pnum" class="pull-left form-control" style="width: 100px; margin-right: 5px">
+                                <input type="number" name="num" value="1" min="1" id="pnum" aria-label="{LANG.detail_pro_number}" class="pull-left form-control" style="width: 100px; margin-right: 5px">
                                 <!-- BEGIN: product_number -->
                                 <span class="help-block pull-left" id="product_number">{LANG.detail_pro_number}: <strong>{PRODUCT_NUMBER}</strong> {pro_unit}
                                 </span>
@@ -300,15 +300,15 @@
                     </table>
                     <!-- END: typepeice -->
                     <!-- BEGIN: order -->
-                    <button class="btn btn-danger btn-order btn-order-cart" data-id="{proid}" onclick="cartorder_detail(this, {POPUP}, 0); return !1;">
+                    <button type="button" class="btn btn-danger btn-order btn-order-cart" data-id="{proid}" onclick="cartorder_detail(this, {POPUP}, 0); return !1;">
                         <i class="fa fa-shopping-cart fa-lg"></i> {LANG.add_cart}
                     </button>
-                    <button class="btn btn-success btn-order btn-order-buy" data-id="{proid}" onclick="cartorder_detail(this, {POPUP}, 1); return !1;">
+                    <button type="button" class="btn btn-success btn-order btn-order-buy" data-id="{proid}" onclick="cartorder_detail(this, {POPUP}, 1); return !1;">
                         <i class="fa fa-paper-plane-o fa-lg"></i> {LANG.buy_now}
                     </button>
                     <!-- END: order -->
                     <!-- BEGIN: product_empty -->
-                    <button class="btn btn-danger disabled">{LANG.product_empty}</button>
+                    <button type="button" class="btn btn-danger disabled">{LANG.product_empty}</button>
                     <!-- END: product_empty -->
                 </div>
             </div>
@@ -320,7 +320,7 @@
         <ul class="nav nav-tabs" role="tablist">
             <!-- BEGIN: tabs_title -->
             <li role="presentation"
-                <!-- BEGIN: active -->class="active"<!-- END: active -->> <a href="#{TABS_KEY}-{TABS_ID}" aria-controls="{TABS_KEY}-{TABS_ID}" role="tab" data-toggle="tab"> <!-- BEGIN: icon --> <img src="{TABS_ICON}" /> <!-- END: icon --> <!-- BEGIN: icon_default --> <em class="fa fa-bars">&nbsp;</em> <!-- END: icon_default --> <span>{TABS_TITLE}</span>
+                <!-- BEGIN: active -->class="active"<!-- END: active -->> <a href="#{TABS_KEY}-{TABS_ID}" aria-controls="{TABS_KEY}-{TABS_ID}" role="tab" data-toggle="tab"> <!-- BEGIN: icon --> <img src="{TABS_ICON}" alt="{TABS_TITLE}" /> <!-- END: icon --> <!-- BEGIN: icon_default --> <em class="fa fa-bars">&nbsp;</em> <!-- END: icon_default --> <span>{TABS_TITLE}</span>
             </a>
             </li>
             <!-- END: tabs_title -->
@@ -346,13 +346,13 @@
     <!-- END: keywords -->
     <!-- BEGIN: other -->
     <div class="panel panel-default panel-product-others">
-        <div class="panel-heading"><span>{LANG.detail_others}</span></div>
+        <div class="panel-heading"><h2 style="font-size: 14px; margin: 0; font-weight: 700;">{LANG.detail_others}</h2></div>
         <div class="panel-body">{OTHER}</div>
     </div>
     <!-- END: other -->
     <!-- BEGIN: other_view -->
     <div class="panel panel-default panel-product-viewed">
-        <div class="panel-heading"><span>{LANG.detail_others_view}</span></div>
+        <div class="panel-heading"><h2 style="font-size: 14px; margin: 0; font-weight: 700;">{LANG.detail_others_view}</h2></div>
         <div class="panel-body">{OTHER_VIEW}</div>
     </div>
     <!-- END: other_view -->
@@ -362,7 +362,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Đóng">&times;</button>
                 &nbsp;
             </div>
             <div class="modal-body">
@@ -379,7 +379,7 @@
     <div class="shoe-modal-box">
         <div class="shoe-modal-header">
             <h4><em class="fa fa-table"></em> BẢNG QUY ĐỔI KÍCH CỠ GIÀY CHUẨN (SIZE 38 - 43)</h4>
-            <button type="button" class="shoe-modal-close" onclick="closeShoeSizeModal()">&times;</button>
+            <button type="button" class="shoe-modal-close" aria-label="Đóng bảng quy đổi" onclick="closeShoeSizeModal()">&times;</button>
         </div>
         <div class="shoe-modal-body">
             <div class="size-calc-box">
@@ -519,7 +519,7 @@ document.addEventListener('keydown', function(e) {
 <script type="text/javascript" data-show="after">
     $('.open_modal').click(function(e){
         e.preventDefault();
-         $('#idmodals .modal-body').html( '<img src="' + $(this).data('src') + '" alt="" class="img-responsive" />' );
+         $('#idmodals .modal-body').html( '<img src="' + $(this).data('src') + '" alt="{TITLE}" class="img-responsive" />' );
          $('#idmodals').modal('show');
     });
 </script>
@@ -535,14 +535,6 @@ document.addEventListener('keydown', function(e) {
     });
 </script>
 <!-- END: order_number_limit -->
-
-
-
-
-
-
-
-
 
 <script type="text/javascript">
 var detail_error_group = '{LANG.detail_error_group}';
@@ -571,21 +563,9 @@ $(document).ready(function() {
 });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
 <!-- [CUSTOM DAY 6] RANG BUOC BAT BUOC CHON SIZE GIAY TRUOC KHI THEM VAO GIO -->
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Khi khách bấm chọn 1 Size -> Xóa cảnh báo viền đỏ ngay lập tức
     document.body.addEventListener('change', function(e) {
         if (e.target.classList.contains('groupid') || (e.target.name && e.target.name.indexOf('groupid') !== -1)) {
             var warningBox = document.querySelector('.pro-group-lists');
@@ -595,7 +575,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 2. Chặn sự kiện click vào nút Thêm vào giỏ / Mua ngay ở pha Capturing (true) trước khi hàm cartorder_detail() chạy
     document.addEventListener('click', function(e) {
         var btn = e.target.closest('button, a, input[type="button"]');
         if (!btn) return;
@@ -623,7 +602,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var groupContainer = document.querySelector('.pro-group-lists');
                 if (groupContainer) {
                     groupContainer.classList.remove('shoe-size-error-highlight');
-                    void groupContainer.offsetWidth; // Kích hoạt lại hiệu ứng rung
+                    void groupContainer.offsetWidth;
                     groupContainer.classList.add('shoe-size-error-highlight');
 
                     var msg = document.getElementById('shoe-size-alert-text');

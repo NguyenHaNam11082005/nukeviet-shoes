@@ -11,3 +11,5 @@ Disallow: /robots.php
 Disallow: /sess/
 Disallow: /tmp/
 Disallow: /web.config
+
+Sitemap: http://localhost:8088/shopgiay/sitemap.xml

@@ -5,7 +5,7 @@
         <div class="thumbnail shoe-product-card">
             <div style="max-height: {HEIGHT}px" class="item-image shoe-img-wrap">
                 <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow"><img src="{ROW.homeimgthumb}" alt="{ROW.title}"
-                <!-- BEGIN: tooltip_js -->data-content='{ROW.hometext}' data-rel="tooltip" data-img="{ROW.homeimgthumb}"<!-- END: tooltip_js -->class="img-thumbnail" style="max-height:{HEIGHT}px;max-width:{WIDTH}px;"></a>
+                <!-- BEGIN: tooltip_js -->data-content='{ROW.hometext}' data-rel="tooltip" data-img="{ROW.homeimgthumb}" <!-- END: tooltip_js -->class="img-thumbnail" style="max-height:{HEIGHT}px;max-width:{WIDTH}px;"></a>
                 <div class="shoe-quick-action">
                     <a href="{ROW.link_pro}" class="btn-quick-buy" title="Mua nhanh {ROW.title}">
                         <em class="fa fa-bolt"></em> Mua nhanh
@@ -53,18 +53,18 @@
                 <!-- END: contact -->
                 <!-- BEGIN: compare -->
                 <p>
-                    <input type="checkbox" value="{ROW.id}" {ch} onclick="nv_compare({ROW.id});" id="compare_{ROW.id}" /><a href="#" onclick="nv_compare_click();">&nbsp;{LANG.compare}</a>
+                    <input type="checkbox" value="{ROW.id}" {ch} onclick="nv_compare({ROW.id});" id="compare_{ROW.id}" /><button type="button" class="btn btn-link btn-xs" style="padding: 0 4px;" onclick="nv_compare_click();">{LANG.compare}</button>
                 </p>
                 <!-- END: compare -->
                 <div class="clearfix">
                     <!-- BEGIN: order -->
-                    <a href="javascript:void(0)" id="{ROW.id}" title="{ROW.title}" onclick="cartorder(this, {GROUP_REQUIE}, '{ROW.link_pro}'); return !1;"><button type="button" class="btn btn-primary btn-xs">{LANG.add_product}</button></a>
+                    <button type="button" id="{ROW.id}" title="{ROW.title}" onclick="cartorder(this, {GROUP_REQUIE}, '{ROW.link_pro}'); return !1;" class="btn btn-primary btn-xs">{LANG.add_product}</button>
                     <!-- END: order -->
                     <!-- BEGIN: product_empty -->
-                    <button class="btn btn-danger disabled btn-xs">{LANG.product_empty}</button>
+                    <button type="button" class="btn btn-danger disabled btn-xs">{LANG.product_empty}</button>
                     <!-- END: product_empty -->
                     <!-- BEGIN: wishlist -->
-                    <a href="javascript:void(0)" title="{ROW.title}"><button type="button" onclick="wishlist({ROW.id}, this)" class="btn btn-primary btn-xs <!-- BEGIN: disabled -->disabled<!-- END: disabled -->">{LANG.wishlist}</button></a>
+                    <button type="button" title="{ROW.title}" onclick="wishlist({ROW.id}, this)" class="btn btn-primary btn-xs <!-- BEGIN: disabled -->disabled<!-- END: disabled -->">{LANG.wishlist}</button>
                     <!-- END: wishlist -->
                 </div>
             </div>
